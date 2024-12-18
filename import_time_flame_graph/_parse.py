@@ -17,8 +17,9 @@ def parse(
         None,
     )
 
-    # Filter out blank lines.
-    lines = (line for line in lines if line and not line.isspace())
+    # Filter out junk that didn't come from `-X importtime`, e.g. random stderr messages.
+    # This also filters out blank lines.
+    lines = (line for line in lines if line.startswith("import time:"))
 
     lines = (_parse_line(line) for line in lines)
 
