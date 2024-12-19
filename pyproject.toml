@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "import_time_flame_graph"
+description = "Make a flame graph from the output of `-X importtime`."
+version = "0.0.0"
+authors = ["Max Marrone <max@marrone.nyc>"]
+
+readme = "README.md"
+
+packages = [{include = "import_time_flame_graph", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+
+[tool.poetry.group.dev.dependencies]
+black = "==24.10.0"
+mypy = "==1.13.0"
+pytest = "^8.3.4"
+
+[tool.mypy]
+strict = true
+
+[tool.pytest]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
