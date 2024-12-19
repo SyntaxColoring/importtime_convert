@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>import_time_flame_graph</title>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+</head>
+
+<body>
+  Hello, world!
+  <script>
+    "use strict";
+
+    const WHEEL_NAME = "import_time_flame_graph-0.0.0-py2.py3-none-any.whl";
+
+    async function main() {
+      console.log("Loading Pyodide...");
+      const pyodide = await loadPyodide({
+        packages: WHEEL_NAME
+      });
+
+      console.log("Running Python...")
+      console.log(pyodide.runPython(`
+        import import_time_flame_graph
+        import_time_flame_graph.__version__
+      `))
+    }
+
+    main()
+  </script>
+</body>
+
+</html>
