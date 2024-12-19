@@ -9,7 +9,7 @@ import typing
 def parse(
     # todo: Might want to take my own advice here and use a less restrictive
     # protocol instead of typing.TextIO. https://stackoverflow.com/questions/38569401
-    input: typing.TextIO
+    input: typing.TextIO,
 ) -> list[Node]:
     lines = itertools.islice(
         input,
@@ -76,7 +76,11 @@ def _group_indents(
         yield line
 
 
-def _grow_tree(parsed_lines: typing.Iterable[_ParsedLine | typing.Literal["begin_group", "end_group"]]) -> list[Node]:
+def _grow_tree(
+    parsed_lines: typing.Iterable[
+        _ParsedLine | typing.Literal["begin_group", "end_group"]
+    ]
+) -> list[Node]:
     result: list[Node] = []
 
     for line in parsed_lines:
@@ -95,11 +99,12 @@ def _grow_tree(parsed_lines: typing.Iterable[_ParsedLine | typing.Literal["begin
                     self_us=line.self_us,
                     cumulative_us=line.cumulative_us,
                     imported_package=line.imported_package,
-                    children=[]
+                    children=[],
                 )
             )
 
     return result
+
 
 # Example:
 # import time:   12 |        345 |     foo._bar.baz
