@@ -3,6 +3,7 @@ from __future__ import annotations
 import dataclasses
 import re
 import typing
+import itertools
 
 
 def parse(
@@ -11,11 +12,7 @@ def parse(
     input: typing.TextIO,
 ) -> list[Node]:
     lines = _parse_lines(input)
-
-    lines = _group_indents(list(lines))
-
     nodes = _grow_tree(lines)
-
     return nodes
 
 
@@ -40,61 +37,32 @@ class _ParsedLine:
     imported_package: str
 
 
-def _group_indents(
-    lines: list[_ParsedLine],
-) -> typing.Iterable[_ParsedLine | typing.Literal["begin_group", "end_group"]]:
-    # TODO: This reversal is for easier implementation of this
-    # function (it's easier to keep track of things if we can
-    # guarantee that we only increase by one level of indentation at a time)
-    # but it does reverse the
-    reversed_lines = reversed(lines)
-    indentation_stack: list[int] = []
-    for line in reversed_lines:
-        if not indentation_stack:
-            yield "begin_group"
-            indentation_stack.append(line.raw_indentation_length)
-
-        previous_indentation_level = indentation_stack[-1]
-        indentation_change = line.raw_indentation_length - previous_indentation_level
-
-        if indentation_change > 0:  # Indentation got deeper.
-            yield "begin_group"
-            indentation_stack.append(line.raw_indentation_length)
-        else:
-            while line.raw_indentation_length < indentation_stack[-1]:
-                yield "end_group"
-                indentation_stack.pop()
-        yield line
-
-
-def _grow_tree(
-    parsed_lines: typing.Iterable[
-        _ParsedLine | typing.Literal["begin_group", "end_group"]
-    ]
-) -> list[Node]:
-    result: list[Node] = []
+def _grow_tree(parsed_lines: typing.Iterable[_ParsedLine]) -> list[Node]:
+    # List of (indentation_level, node) tuples.
+    nodes_without_parent: list[tuple[int, Node]] = []
 
     for line in parsed_lines:
-        if line == "begin_group":
-            children = _grow_tree(parsed_lines)
-            if result:
-                parent = result[-1]
-                parent.children[:] = children
-            else:
-                result.extend(children)
-        elif line == "end_group":
-            return result
-        else:
-            result.append(
+        nodes_to_adopt = list(
+            itertools.takewhile(
+                lambda n: n[0] > line.raw_indentation_length,
+                reversed(nodes_without_parent),
+            )
+        )
+        nodes_to_adopt.reverse()
+        del nodes_without_parent[len(nodes_without_parent) - len(nodes_to_adopt) :]
+        nodes_without_parent.append(
+            (
+                line.raw_indentation_length,
                 Node(
                     self_us=line.self_us,
                     cumulative_us=line.cumulative_us,
                     imported_package=line.imported_package,
-                    children=[],
-                )
+                    children=[node[1] for node in nodes_to_adopt],
+                ),
             )
+        )
 
-    return result
+    return [node[1] for node in nodes_without_parent]
 
 
 # import time:   12 |        345 |     foo._bar.baz
