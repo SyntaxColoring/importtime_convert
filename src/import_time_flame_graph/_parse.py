@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 import itertools
 import re
 import sys
@@ -30,7 +31,8 @@ def parse(
     return nodes
 
 
-class Node(typing.NamedTuple):
+@dataclasses.dataclass
+class Node:
     self_us: int
     cumulative_us: int
     imported_package: str
@@ -42,7 +44,8 @@ class InputFormatError(ValueError):
         self.bad_line = bad_line
 
 
-class _ParsedLine(typing.NamedTuple):
+@dataclasses.dataclass
+class _ParsedLine:
     self_us: int
     cumulative_us: int
     raw_indentation_length: int
