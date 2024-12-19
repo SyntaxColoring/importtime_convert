@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-import itertools
 import re
-import sys
 import typing
 
 
@@ -12,17 +10,7 @@ def parse(
     # protocol instead of typing.TextIO. https://stackoverflow.com/questions/38569401
     input: typing.TextIO,
 ) -> list[Node]:
-    lines = itertools.islice(
-        input,
-        1,  # Skip the header line.
-        None,
-    )
-
-    # Filter out junk that didn't come from `-X importtime`, e.g. random stderr messages.
-    # This also filters out blank lines.
-    lines = (line for line in lines if line.startswith("import time:"))
-
-    lines = (_parse_line(line) for line in lines)
+    lines = _parse_lines(input)
 
     lines = _group_indents(list(lines))
 
@@ -109,9 +97,9 @@ def _grow_tree(
     return result
 
 
-# Example:
 # import time:   12 |        345 |     foo._bar.baz
 _pattern = re.compile(
+    r".*"
     r"import time:"
     r"\s*"
     r"(?P<self_us>[0-9]+)"
@@ -123,13 +111,13 @@ _pattern = re.compile(
 )
 
 
-def _parse_line(line: str) -> _ParsedLine:
-    match = re.fullmatch(_pattern, line)
-    if match is None:
-        raise InputFormatError(bad_line=line)
-    return _ParsedLine(
-        self_us=int(match["self_us"]),
-        cumulative_us=int(match["cumulative_us"]),
-        raw_indentation_length=len(match["indentation"]),
-        imported_package=match["package"],
-    )
+def _parse_lines(raw_lines: typing.Iterable[str]) -> typing.Iterator[_ParsedLine]:
+    for raw_line in raw_lines:
+        match = re.fullmatch(_pattern, raw_line)
+        if match is not None:
+            yield _ParsedLine(
+                self_us=int(match["self_us"]),
+                cumulative_us=int(match["cumulative_us"]),
+                raw_indentation_length=len(match["indentation"]),
+                imported_package=match["package"],
+            )
