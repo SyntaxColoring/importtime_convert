@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import sys
 
-from ._parse import parse, InputFormatError
 from ._output_format import to_gregg
+from ._parse import InputFormatError, parse
 
 
 def _cli_main() -> int:

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import dataclasses
+import itertools
 import re
 import typing
-import itertools
 
 
 def parse(
