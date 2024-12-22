@@ -10,18 +10,18 @@ def parse(
     # todo: Might want to take my own advice here and use a less restrictive
     # protocol instead of typing.TextIO. https://stackoverflow.com/questions/38569401
     input: typing.TextIO,
-) -> list[Node]:
+) -> list[Import]:
     lines = _parse_lines(input)
     nodes = _grow_tree(lines)
     return nodes
 
 
 @dataclasses.dataclass
-class Node:
+class Import:
     self_us: int
     cumulative_us: int
-    imported_package: str
-    children: list[Node]
+    package: str
+    children: list[Import]
 
 
 class InputFormatError(ValueError):
@@ -37,9 +37,9 @@ class _ParsedLine:
     imported_package: str
 
 
-def _grow_tree(parsed_lines: typing.Iterable[_ParsedLine]) -> list[Node]:
+def _grow_tree(parsed_lines: typing.Iterable[_ParsedLine]) -> list[Import]:
     # List of (indentation_level, node) tuples.
-    nodes_without_parent: list[tuple[int, Node]] = []
+    nodes_without_parent: list[tuple[int, Import]] = []
 
     for line in parsed_lines:
         nodes_to_adopt = list(
@@ -53,10 +53,10 @@ def _grow_tree(parsed_lines: typing.Iterable[_ParsedLine]) -> list[Node]:
         nodes_without_parent.append(
             (
                 line.raw_indentation_length,
-                Node(
+                Import(
                     self_us=line.self_us,
                     cumulative_us=line.cumulative_us,
-                    imported_package=line.imported_package,
+                    package=line.imported_package,
                     children=[node[1] for node in nodes_to_adopt],
                 ),
             )

@@ -1,22 +1,22 @@
 import typing
 
-from ._parse import Node
+from ._parse import Import
 
 
-def to_gregg(nodes: list[Node]) -> str:
+def to_gregg(nodes: list[Import]) -> str:
     def get_lines() -> typing.Iterator[str]:
         for path in _all_paths(nodes):
             weight = path[-1].self_us
-            path_str = ";".join(node.imported_package for node in path)
+            path_str = ";".join(node.package for node in path)
             yield f"{path_str} {weight}"
 
     return "\n".join(get_lines()) + "\n"
 
 
-def _all_paths(nodes: typing.Iterable[Node]) -> typing.Iterable[list[Node]]:
+def _all_paths(nodes: typing.Iterable[Import]) -> typing.Iterable[list[Import]]:
     def _all_paths_internal(
-        node: Node, prefix: list[Node]
-    ) -> typing.Iterable[list[Node]]:
+        node: Import, prefix: list[Import]
+    ) -> typing.Iterable[list[Import]]:
         this_prefix = prefix + [node]
         for child in node.children:
             yield from _all_paths_internal(child, this_prefix)

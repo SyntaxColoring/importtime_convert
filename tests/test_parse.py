@@ -6,7 +6,7 @@ import typing
 
 import pytest
 
-from import_time_flame_graph._parse import Node, parse
+from import_time_flame_graph._parse import Import, parse
 
 
 def test_column_parsing() -> None:
@@ -19,11 +19,9 @@ import time:       555 |        666 | foo._bar.baz
 """
     result = parse(io.StringIO(input))
     assert result == [
-        Node(self_us=1, cumulative_us=2, imported_package="foo", children=[]),
-        Node(self_us=33, cumulative_us=44, imported_package="bar", children=[]),
-        Node(
-            self_us=555, cumulative_us=666, imported_package="foo._bar.baz", children=[]
-        ),
+        Import(self_us=1, cumulative_us=2, package="foo", children=[]),
+        Import(self_us=33, cumulative_us=44, package="bar", children=[]),
+        Import(self_us=555, cumulative_us=666, package="foo._bar.baz", children=[]),
     ]
 
 
@@ -42,11 +40,9 @@ blah
 """
     result = parse(io.StringIO(input))
     assert result == [
-        Node(self_us=1, cumulative_us=2, imported_package="foo", children=[]),
-        Node(self_us=33, cumulative_us=44, imported_package="bar", children=[]),
-        Node(
-            self_us=555, cumulative_us=666, imported_package="foo._bar.baz", children=[]
-        ),
+        Import(self_us=1, cumulative_us=2, package="foo", children=[]),
+        Import(self_us=33, cumulative_us=44, package="bar", children=[]),
+        Import(self_us=555, cumulative_us=666, package="foo._bar.baz", children=[]),
     ]
 
 
@@ -62,7 +58,7 @@ import time:         1 |          2 | foo"""
 
     result = parse(io.StringIO(input))
     assert result == [
-        Node(self_us=1, cumulative_us=2, imported_package="foo", children=[]),
+        Import(self_us=1, cumulative_us=2, package="foo", children=[]),
     ]
 
 
@@ -132,12 +128,12 @@ import time:         0 |          0 | unittest.mock
     assert simplified_result == expected_result
 
 
-def _simplify_tree(tree: list[Node]) -> list[_SimplifiedNode]:
+def _simplify_tree(tree: list[Import]) -> list[_SimplifiedNode]:
     """Convert a parsed tree into a dict structure, for more convenient comparison against literals."""
 
     def simplify_node(entries: list[tuple[str, typing.Any]]) -> _SimplifiedNode:
         original = dict(entries)
-        simplified = {"p": original["imported_package"], "c": original["children"]}
+        simplified = {"p": original["package"], "c": original["children"]}
         return simplified  # type: ignore
 
     return [dataclasses.asdict(node, dict_factory=simplify_node) for node in tree]
