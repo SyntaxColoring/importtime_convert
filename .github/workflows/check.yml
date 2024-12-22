@@ -1,0 +1,15 @@
+on: push
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      # For pip, nox, and pytest.
+      FORCE_COLOR: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Nox
+        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d # 2024.10.09, pinned by SHA for security.
+      - name: Run Nox
+        run: nox
