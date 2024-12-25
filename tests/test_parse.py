@@ -6,7 +6,7 @@ import typing
 
 import pytest
 
-from importtime_convert._parse import Import, parse
+from importtime_convert import Import, parse
 
 
 def test_column_parsing() -> None:
