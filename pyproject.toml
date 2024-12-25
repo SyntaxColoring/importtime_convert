@@ -3,7 +3,7 @@ requires = ["setuptools >= 61.0"]  # >=61.0 for pyproject.toml support.
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "import_time_flame_graph"
+name = "importtime_convert"
 description = "Make a flame graph from the output of `-X importtime`."
 version = "0.0.0"
 authors = [{name="Max Marrone", email="max@marrone.nyc"}]

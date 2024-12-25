@@ -12,7 +12,7 @@ Typical usage example, with Bash redirection syntax:
 # Python outputs its raw importtime data to stderr. Save it to raw_importtime.txt.
 python -X importtime -c 'import module_to_test' 2> raw_importtime.txt
 # Convert it to "flamegraph.pl" format and save that to converted_importtime.txt.
-python -m import_time_flame_graph --output-format flamegraph.pl <raw_importtime.txt >converted_importtime.txt
+python -m importtime_convert --output-format flamegraph.pl <raw_importtime.txt >converted_importtime.txt
 ```
 
 Or, all in one step:
@@ -20,15 +20,15 @@ Or, all in one step:
 ```bash
 python -X importtime -c 'import module_to_test' \
     2>&1 >/dev/null
-    | python -X import_time_flame_graph --output-format flamegraph.pl
+    | python -X importtime_convert --output-format flamegraph.pl
     > converted_importtime.txt
 ```
 
-See the [available output formats](#available-output-formats) below and `python -m import_time_flame_graph --help` for full details.
+See the [available output formats](#available-output-formats) below and `python -m importtime_convert --help` for full details.
 
 ## Usage as a library
 
-The following are available from `import import_time_flame_graph`:
+The following are available from `import importtime_convert`:
 
 ### `parse(input: typing.TextIO | str) -> list[Import]`
 

@@ -6,7 +6,7 @@ import typing
 
 import pytest
 
-from import_time_flame_graph._parse import Import, parse
+from importtime_convert._parse import Import, parse
 
 
 def test_column_parsing() -> None:
@@ -139,8 +139,8 @@ import time:         0 |          0 | unittest.mock
         ["re"],
         ["asyncio"],
         ["unittest.mock"],
-        ["import_time_flame_graph"],
-        ["re", "asyncio", "unittest.mock", "import_time_flame_graph"],
+        ["importtime_convert"],
+        ["re", "asyncio", "unittest.mock", "importtime_convert"],
     ],
 )
 def test_live(packages: list[str]) -> None:
