@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import dataclasses
 import io
 import subprocess
 import sys
@@ -90,7 +89,7 @@ import time:         0 |          0 | unittest.mock
     result = parse(io.StringIO(input))
     simplified_result = _simplify_tree(result)
 
-    expected_result: list[_SimplifiedNode] = [
+    expected_result: list[_SimplifiedImport] = [
         {
             "p": "asyncio",
             "c": [
@@ -171,8 +170,10 @@ def test_live(packages: list[str]) -> None:
         imports: list[Import], root_level: int = 0
     ) -> typing.Iterator[tuple[str, int]]:
         for import_ in imports:
-            yield from depth_first_packages_and_levels(import_.children, root_level + 1)
-            yield import_.package, root_level
+            yield from depth_first_packages_and_levels(
+                import_["children"], root_level + 1
+            )
+            yield import_["package"], root_level
 
     # From the result of our parsing, reconstruct what the original "imported package"
     # column ought to have looked like, including indentation. It should match exactly.
@@ -198,19 +199,20 @@ def _do_x_importtime(packages: list[str]) -> str:
     return output.stderr.decode("ascii")
 
 
-def _simplify_tree(tree: list[Import]) -> list[_SimplifiedNode]:
-    """Convert a parsed tree into a dict structure, for more convenient comparison against literals."""
+def _simplify_tree(tree: list[Import]) -> list[_SimplifiedImport]:
+    """Pare down the nested dict structure for more convenient comparison against literals."""
 
-    def simplify_node(entries: list[tuple[str, typing.Any]]) -> _SimplifiedNode:
-        original = dict(entries)
-        simplified = {"p": original["package"], "c": original["children"]}
-        return simplified  # type: ignore
+    def _simplify_import(import_: Import) -> _SimplifiedImport:
+        return _SimplifiedImport(
+            p=import_["package"],
+            c=[_simplify_import(child) for child in import_["children"]],
+        )
 
-    return [dataclasses.asdict(node, dict_factory=simplify_node) for node in tree]
+    return [_simplify_import(import_) for import_ in tree]
 
 
-class _SimplifiedNode(typing.TypedDict):
+class _SimplifiedImport(typing.TypedDict):
     p: str
     """This node's package name."""
-    c: list[_SimplifiedNode]
+    c: list[_SimplifiedImport]
     """This node's children."""

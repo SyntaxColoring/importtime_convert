@@ -16,8 +16,7 @@ def parse(
     return nodes
 
 
-@dataclasses.dataclass
-class Import:
+class Import(typing.TypedDict):
     self_us: int
     cumulative_us: int
     package: str
