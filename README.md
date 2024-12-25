@@ -41,7 +41,7 @@ An `Import` is a dict with the following keys:
 * `"package"` (`str`): The full package path of this import, e.g. `"foo.bar"`.
 * `"cumulative_us"` (`int`): The time, in microseconds, that the interpreter spent on this module, including any subimports.
 * `"self_us"` (`int`): The time, in microseconds, that the interpreter spent on this module, *not* including any subimports.
-* `"children"` (`list[Import]`): This module's subimports. The list is in the order that the interpreter traversed them.
+* `"subimports"` (`list[Import]`): This module's subimports. The list is in the order that the interpreter traversed them.
 
 ### Output conversion functions
 
@@ -67,12 +67,12 @@ See the [available output formats](#available-output-formats) below for details.
       "package": "foo",
       "self_us": 200,
       "cumulative_us": 300,
-      "children": [
+      "subimports": [
         {
           "package": "bar",
           "self_us": 100,
           "cumulative_us": 100,
-          "children": []
+          "subimports": []
         }
       ]
     },
@@ -80,7 +80,7 @@ See the [available output formats](#available-output-formats) below for details.
       "package": "baz.baz",
       "self_us": 100,
       "cumulative_us": 100,
-      "children": []
+      "subimports": []
     }
   ]
   ```

@@ -34,7 +34,7 @@ class Import(typing.TypedDict):
     cumulative_us: int
     """The time, in microseconds, that the interpreter spent on this module, *not* including any subimports."""
 
-    children: list[Import]
+    subimports: list[Import]
     """This module's subimports. The list is in the order that the interpreter traversed them."""
 
 
@@ -66,7 +66,7 @@ def _grow_tree(parsed_lines: typing.Iterable[_ParsedLine]) -> list[Import]:
                     self_us=line.self_us,
                     cumulative_us=line.cumulative_us,
                     package=line.imported_package,
-                    children=[node[1] for node in nodes_to_adopt],
+                    subimports=[node[1] for node in nodes_to_adopt],
                 ),
             )
         )

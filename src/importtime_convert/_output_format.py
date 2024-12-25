@@ -23,7 +23,7 @@ def _all_paths(nodes: typing.Iterable[Import]) -> typing.Iterable[list[Import]]:
         node: Import, prefix: list[Import]
     ) -> typing.Iterable[list[Import]]:
         this_prefix = prefix + [node]
-        for child in node["children"]:
+        for child in node["subimports"]:
             yield from _all_paths_internal(child, this_prefix)
         yield this_prefix
 

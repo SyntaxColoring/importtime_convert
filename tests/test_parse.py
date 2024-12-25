@@ -19,9 +19,9 @@ import time:       555 |        666 | foo._bar.baz
 """
     result = parse(input)
     assert result == [
-        Import(self_us=1, cumulative_us=2, package="foo", children=[]),
-        Import(self_us=33, cumulative_us=44, package="bar", children=[]),
-        Import(self_us=555, cumulative_us=666, package="foo._bar.baz", children=[]),
+        Import(self_us=1, cumulative_us=2, package="foo", subimports=[]),
+        Import(self_us=33, cumulative_us=44, package="bar", subimports=[]),
+        Import(self_us=555, cumulative_us=666, package="foo._bar.baz", subimports=[]),
     ]
 
 
@@ -45,9 +45,9 @@ blah
 """
     result = parse(input)
     assert result == [
-        Import(self_us=1, cumulative_us=2, package="foo", children=[]),
-        Import(self_us=33, cumulative_us=44, package="bar", children=[]),
-        Import(self_us=555, cumulative_us=666, package="foo._bar.baz", children=[]),
+        Import(self_us=1, cumulative_us=2, package="foo", subimports=[]),
+        Import(self_us=33, cumulative_us=44, package="bar", subimports=[]),
+        Import(self_us=555, cumulative_us=666, package="foo._bar.baz", subimports=[]),
     ]
 
 
@@ -63,7 +63,7 @@ import time:         1 |          2 | foo"""
 
     result = parse(input)
     assert result == [
-        Import(self_us=1, cumulative_us=2, package="foo", children=[]),
+        Import(self_us=1, cumulative_us=2, package="foo", subimports=[]),
     ]
 
 
@@ -170,7 +170,7 @@ def test_live(packages: list[str]) -> None:
     ) -> typing.Iterator[tuple[str, int]]:
         for import_ in imports:
             yield from depth_first_packages_and_levels(
-                import_["children"], root_level + 1
+                import_["subimports"], root_level + 1
             )
             yield import_["package"], root_level
 
@@ -204,7 +204,7 @@ def _simplify_tree(tree: list[Import]) -> list[_SimplifiedImport]:
     def _simplify_import(import_: Import) -> _SimplifiedImport:
         return _SimplifiedImport(
             p=import_["package"],
-            c=[_simplify_import(child) for child in import_["children"]],
+            c=[_simplify_import(child) for child in import_["subimports"]],
         )
 
     return [_simplify_import(import_) for import_ in tree]
