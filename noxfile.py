@@ -13,20 +13,20 @@ def make_dev_venv(session):
     Point your editor to this so you get type hints for pytest and such.
     """
     session.run("python", "-m", "venv", ".venv")
-    session.run(".venv/bin/pip", "install", "-e", ".[dev]", external=True)
+    session.run(".venv/bin/pip", "install", "-r", "requirements-dev.txt", external=True)
 
 
 @nox.session
 def typecheck(session):
     """Do typechecking."""
-    session.install("-e", ".[dev]")
+    session.install("-r", "requirements-dev.txt")
     session.run("mypy", ".")
 
 
 @nox.session(default=False)
 def format(session):
     """Automatically fix formatting."""
-    session.install("-e", ".[dev]")
+    session.install("-r", "requirements-dev.txt")
     session.run("black", ".")
     session.run("isort", ".")
 
@@ -34,7 +34,7 @@ def format(session):
 @nox.session
 def format_check(session):
     """Check formatting."""
-    session.install("-e", ".[dev]")
+    session.install("-r", "requirements-dev.txt")
     session.run("black", "--check", ".")
     session.run("isort", "--check", ".")
 
@@ -42,6 +42,13 @@ def format_check(session):
 @nox.session(python=SUPPORTED_PYTHON_VERSIONS)
 def test(session):
     """Run the package tests."""
-    session.install("-e", ".[dev]")
+    session.install("-r", "requirements-dev.txt")
     args = session.posargs or ["tests"]
     session.run("pytest", *args)
+
+
+@nox.session(default=False)
+def build(session):
+    """Build the package distribution."""
+    session.install("-r", "requirements-dev.txt")
+    session.run("python", "-m", "build")
