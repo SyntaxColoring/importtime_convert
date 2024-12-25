@@ -11,6 +11,7 @@ from ._parse import Import, parse
 
 def _cli_main() -> None:
     parser = argparse.ArgumentParser(
+        prog="python -m importtime_convert",  # Python >=3.14 could do this automatically.
         description=textwrap.dedent(
             """\
             Convert the output of `python -X importtime ...` to other formats.
