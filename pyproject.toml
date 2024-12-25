@@ -25,6 +25,7 @@ profile = "black"
 [tool.mypy]
 strict = true
 python_version = 3.9  # Our lowest supported version.
+exclude = "^dist/"
 
 [tool.pytest]
 testpaths = ["tests"]
