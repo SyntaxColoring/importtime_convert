@@ -24,11 +24,6 @@ class Import:
     children: list[Import]
 
 
-class InputFormatError(ValueError):
-    def __init__(self, bad_line: str) -> None:
-        self.bad_line = bad_line
-
-
 @dataclasses.dataclass
 class _ParsedLine:
     self_us: int
