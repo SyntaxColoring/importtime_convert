@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import io
 import itertools
 import re
 import typing
@@ -9,8 +10,10 @@ import typing
 def parse(
     # todo: Might want to take my own advice here and use a less restrictive
     # protocol instead of typing.TextIO. https://stackoverflow.com/questions/38569401
-    input: typing.TextIO,
+    input: str | typing.TextIO,
 ) -> list[Import]:
+    if isinstance(input, str):
+        input = io.StringIO(input)
     lines = _parse_lines(input)
     nodes = _grow_tree(lines)
     return nodes

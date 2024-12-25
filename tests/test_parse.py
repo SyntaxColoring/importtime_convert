@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import io
 import subprocess
 import sys
 import typing
@@ -18,7 +17,7 @@ import time:         1 |          2 | foo
 import time:        33 |         44 | bar
 import time:       555 |        666 | foo._bar.baz
 """
-    result = parse(io.StringIO(input))
+    result = parse(input)
     assert result == [
         Import(self_us=1, cumulative_us=2, package="foo", children=[]),
         Import(self_us=33, cumulative_us=44, package="bar", children=[]),
@@ -44,7 +43,7 @@ blah
 import time:       555 |        666 | foo._bar.baz
 blah
 """
-    result = parse(io.StringIO(input))
+    result = parse(input)
     assert result == [
         Import(self_us=1, cumulative_us=2, package="foo", children=[]),
         Import(self_us=33, cumulative_us=44, package="bar", children=[]),
@@ -62,7 +61,7 @@ import time:         1 |          2 | foo"""
     if include_trailing_newline:
         input += "\n"
 
-    result = parse(io.StringIO(input))
+    result = parse(input)
     assert result == [
         Import(self_us=1, cumulative_us=2, package="foo", children=[]),
     ]
@@ -86,7 +85,7 @@ import time:         0 |          0 |     importlib.util
 import time:         0 |          0 |   pkgutil
 import time:         0 |          0 | unittest.mock
 """
-    result = parse(io.StringIO(input))
+    result = parse(input)
     simplified_result = _simplify_tree(result)
 
     expected_result: list[_SimplifiedImport] = [
@@ -177,7 +176,7 @@ def test_live(packages: list[str]) -> None:
 
     # From the result of our parsing, reconstruct what the original "imported package"
     # column ought to have looked like, including indentation. It should match exactly.
-    parsed = parse(io.StringIO(raw_output))
+    parsed = parse(raw_output)
     parsed_packages_and_levels = depth_first_packages_and_levels(parsed)
     reconstructed_package_column = [
         " " * (level * 2 + 1) + package
