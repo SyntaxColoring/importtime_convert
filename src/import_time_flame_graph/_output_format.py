@@ -3,7 +3,7 @@ import typing
 from ._parse import Import
 
 
-def to_gregg(nodes: list[Import]) -> str:
+def to_flamegraph_pl(nodes: list[Import]) -> str:
     def get_lines() -> typing.Iterator[str]:
         for path in _all_paths(nodes):
             weight = path[-1].self_us
