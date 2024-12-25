@@ -31,10 +31,10 @@ def _cli_main() -> None:
         "--output-format",
         "-o",
         choices=["flamegraph.pl", "json"],
-        default="flamegraph.pl",
+        required=True,
         help=textwrap.dedent(
             """\
-            Select the output format. The default is "flamegraph.pl".
+            Select the output format."
 
             flamegraph.pl: For flame graph generation tools. The format is defined by Brendan Gregg's flamegraph.pl script, but other flame graph tools accept it, too.
 
