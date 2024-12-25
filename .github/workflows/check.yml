@@ -1,3 +1,5 @@
+name: Tests and static checks
+
 on: push
 jobs:
   check:
@@ -11,5 +13,5 @@ jobs:
           persist-credentials: false
       - name: Install Nox
         uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d # 2024.10.09, pinned by SHA for security.
-      - name: Run Nox
+      - name: Run tests and static checks
         run: nox
