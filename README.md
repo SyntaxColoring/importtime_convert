@@ -45,7 +45,7 @@ An `Import` is a dict with the following keys:
 
 ### Output conversion functions
 
-* `to_flamegraph_pl(parsed: list[Import]) -> str`
+* `to_flamegraph_pl(imports: list[Import]) -> str`
 
 See the [available output formats](#available-output-formats) below for details.
 
