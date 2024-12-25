@@ -12,6 +12,11 @@ def parse(
     # protocol instead of typing.TextIO. https://stackoverflow.com/questions/38569401
     input: str | typing.TextIO,
 ) -> list[Import]:
+    """Parse raw data from `-X importtime` into an import tree.
+
+    Returns the list of top-level imports, in the order that the interpreter
+    traversed them.
+    """
     if isinstance(input, str):
         input = io.StringIO(input)
     lines = _parse_lines(input)
@@ -20,10 +25,17 @@ def parse(
 
 
 class Import(typing.TypedDict):
-    self_us: int
-    cumulative_us: int
     package: str
+    """The full package path of this import, e.g. `"foo.bar"`."""
+
+    self_us: int
+    """The time, in microseconds, that the interpreter spent on this module, including any subimports."""
+
+    cumulative_us: int
+    """The time, in microseconds, that the interpreter spent on this module, *not* including any subimports."""
+
     children: list[Import]
+    """This module's subimports. The list is in the order that the interpreter traversed them."""
 
 
 @dataclasses.dataclass
