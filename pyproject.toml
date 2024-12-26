@@ -20,9 +20,9 @@ requires-python = ">=3.9"
 dependencies = []
 
 [project.urls]
-source = "https://github.com/SyntaxColoring/importtime_convert"
-issues = "https://github.com/SyntaxColoring/importtime_convert/issues"
-changelog = "https://github.com/SyntaxColoring/importtime_convert/blob/main/CHANGELOG.md"
+Source = "https://github.com/SyntaxColoring/importtime_convert"
+Issues = "https://github.com/SyntaxColoring/importtime_convert/issues"
+Changelog = "https://github.com/SyntaxColoring/importtime_convert/blob/main/CHANGELOG.md"
 
 [tool.isort]
 profile = "black"
