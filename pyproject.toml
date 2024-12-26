@@ -5,10 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "importtime_convert"
 description = "Make a flame graph from the output of `-X importtime`."
-version = "0.0.0"
+version = "1.0.0"
 authors = [{name="Max Marrone", email="max@marrone.nyc"}]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Typing :: Typed",
