@@ -5,7 +5,7 @@ import textwrap
 import typing
 
 from . import __version__
-from ._output_format import to_flamegraph_pl
+from ._output_formats import to_flamegraph_pl
 from ._parse import Import, parse
 
 
