@@ -14,5 +14,6 @@ Then:
 1. Make sure the release notes are updated.
 2. Bump all version numbers.
 3. Make sure CI passes on GitHub.
-4. Run the deployment workflow on GitHub. It will build the project and publish it to PyPI.
-5. Manually test the PyPI release with `pip install` in a throwaway venv.
+4. Tag the release: `git tag --annotated "Release v1.2.3." v1.2.3 && git push origin v1.2.3`
+5. Run the deployment workflow on GitHub. It will build the project, then wait for publish approval, then publish to PyPI.
+6. Manually test the PyPI release with `pip install` in a throwaway venv.
