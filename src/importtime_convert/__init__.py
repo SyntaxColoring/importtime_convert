@@ -6,4 +6,4 @@ from ._output_formats import to_json_serializable as to_json_serializable
 from ._parse import Import as Import
 from ._parse import parse as parse
 
-__version__ = "1.0.0"
+__version__ = "1.0.0.post1"
