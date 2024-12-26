@@ -1,3 +1,4 @@
+import dataclasses
 import typing
 
 from ._parse import Import
@@ -16,6 +17,10 @@ def to_flamegraph_pl(imports: list[Import]) -> str:
             yield f"{path_str} {weight}"
 
     return "\n".join(get_lines()) + "\n"
+
+
+def to_json_serializable(imports: list[Import]) -> list[dict[str, typing.Any]]:
+    return [dataclasses.asdict(import_) for import_ in imports]
 
 
 def _all_paths(nodes: typing.Iterable[Import]) -> typing.Iterable[list[Import]]:

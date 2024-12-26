@@ -46,6 +46,7 @@ An `Import` is a dataclass with the following keys:
 ### Output conversion functions
 
 * `to_flamegraph_pl(imports: list[Import]) -> str`
+* `to_json_serializable(imports: list[Import]) -> list[dict[str, Any]]`
 
 See the [available output formats](#available-output-formats) below for details.
 
@@ -57,7 +58,7 @@ See the [available output formats](#available-output-formats) below for details.
 
   The format is defined by [Brendan Gregg's flamegraph.pl script](https://github.com/brendangregg/FlameGraph), but other flame graph tools accept it, too. (For example, https://www.speedscope.app/ and https://flamegraph.com/.)
 
-* **`--output-format json` (CLI)**
+* **`--output-format json` (CLI) / `to_json_serializable()` (API)**
 
   A simple JSON format specific to this tool. Looks like this:
 

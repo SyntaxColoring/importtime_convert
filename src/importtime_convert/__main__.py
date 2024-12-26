@@ -5,7 +5,7 @@ import textwrap
 import typing
 
 from . import __version__
-from ._output_formats import to_flamegraph_pl
+from ._output_formats import to_flamegraph_pl, to_json_serializable
 from ._parse import Import, parse
 
 
@@ -51,13 +51,13 @@ def _cli_main() -> None:
     if output_format == "flamegraph.pl":
         sys.stdout.write(to_flamegraph_pl(imports))
     elif output_format == "json":
-        _to_json(imports, sys.stdout)
+        _write_json_str(imports, sys.stdout)
     else:
         typing.assert_never(output_format)
 
 
-def _to_json(imports: list[Import], dest: typing.TextIO) -> None:
-    json.dump(imports, dest, indent=2)
+def _write_json_str(imports: list[Import], dest: typing.TextIO) -> None:
+    json.dump(to_json_serializable(imports), dest, indent=2)
     dest.write("\n")
 
 
