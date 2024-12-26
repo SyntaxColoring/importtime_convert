@@ -19,8 +19,8 @@ Or, all in one step:
 
 ```bash
 python -X importtime -c 'import module_to_test' \
-    2>&1 >/dev/null
-    | python -X importtime_convert --output-format flamegraph.pl
+    2>&1 >/dev/null \
+    | python -m importtime_convert --output-format flamegraph.pl \
     > converted_importtime.txt
 ```
 
