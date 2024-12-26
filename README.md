@@ -87,6 +87,8 @@ See the [available output formats](#available-output-formats) below for details.
 
   See [the API docs above](#Import) for the meanings of the fields.
 
+Feature requests and pull requests are welcome for additional output formats.
+
 ## Related work and alternatives
 
 * https://github.com/asottile/importtime-waterfall
