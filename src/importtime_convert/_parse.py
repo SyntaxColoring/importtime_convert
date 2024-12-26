@@ -24,7 +24,8 @@ def parse(
     return nodes
 
 
-class Import(typing.TypedDict):
+@dataclasses.dataclass
+class Import:
     package: str
     """The full package path of this import, e.g. `"foo.bar"`."""
 

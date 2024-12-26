@@ -36,12 +36,12 @@ The following are available from `import importtime_convert`:
 
 ### `Import`
 
-An `Import` is a dict with the following keys:
+An `Import` is a dataclass with the following keys:
 
-* `"package"` (`str`): The full package path of this import, e.g. `"foo.bar"`.
-* `"cumulative_us"` (`int`): The time, in microseconds, that the interpreter spent on this module, including any subimports.
-* `"self_us"` (`int`): The time, in microseconds, that the interpreter spent on this module, *not* including any subimports.
-* `"subimports"` (`list[Import]`): This module's subimports. The list is in the order that the interpreter traversed them.
+* `package: str`: The full package path of this import, e.g. `"foo.bar"`.
+* `cumulative_us: int`: The time, in microseconds, that the interpreter spent on this module, including any subimports.
+* `self_us: int`: The time, in microseconds, that the interpreter spent on this module, *not* including any subimports.
+* `subimports: list[Import]`: This module's subimports. The list is in the order that the interpreter traversed them.
 
 ### Output conversion functions
 

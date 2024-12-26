@@ -170,9 +170,9 @@ def test_live(packages: list[str]) -> None:
     ) -> typing.Iterator[tuple[str, int]]:
         for import_ in imports:
             yield from depth_first_packages_and_levels(
-                import_["subimports"], root_level + 1
+                import_.subimports, root_level + 1
             )
-            yield import_["package"], root_level
+            yield import_.package, root_level
 
     # From the result of our parsing, reconstruct what the original "imported package"
     # column ought to have looked like, including indentation. It should match exactly.
@@ -203,8 +203,8 @@ def _simplify_tree(tree: list[Import]) -> list[_SimplifiedImport]:
 
     def _simplify_import(import_: Import) -> _SimplifiedImport:
         return _SimplifiedImport(
-            p=import_["package"],
-            c=[_simplify_import(child) for child in import_["subimports"]],
+            p=import_.package,
+            c=[_simplify_import(child) for child in import_.subimports],
         )
 
     return [_simplify_import(import_) for import_ in tree]
