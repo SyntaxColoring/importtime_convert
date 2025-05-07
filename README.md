@@ -28,7 +28,7 @@ Here's a typical usage example, with Bash redirection syntax:
 python -X importtime -c 'import module_to_test' 2> raw_importtime.txt
 
 # Convert it to "flamegraph.pl" format, and save that to converted_importtime.txt.
-python -m importtime_convert --output-format flamegraph.pl <raw_importtime.txt >converted_importtime.txt
+importtime-convert --output-format flamegraph.pl <raw_importtime.txt >converted_importtime.txt
 ```
 
 Or, all in one step:
