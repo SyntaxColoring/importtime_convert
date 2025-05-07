@@ -1,17 +1,33 @@
 ## Overview
 
-This is a CLI tool and small library to parse the output of [`python -X importtime`](https://docs.python.org/3/using/cmdline.html#cmdoption-X) and convert it to other formats. Use it to help visualize and understand your Python import times—for example, by generating [flame graphs](https://www.brendangregg.com/flamegraphs.html).
+This is a CLI tool and small library to parse the output of [`python -X importtime ...`](https://docs.python.org/3/using/cmdline.html#cmdoption-X) and convert it to other formats. Use it to help visualize and understand your Python import times—for example, by generating [flame graphs](https://www.brendangregg.com/flamegraphs.html).
+
+## Installation
+
+With `pip`:
+
+```
+pip install importtime_convert
+importtime-convert --help
+```
+
+Or with [`pipx`](https://pipx.pypa.io/):
+
+```
+pipx run importtime-convert --help
+```
 
 ## Usage as a CLI tool
 
-This tool expects the raw `-X importtime` data on stdin and outputs the converted result on stdout.
+The CLI tool is spelled `importtime-convert` or `python -m importtime_convert`. Give it the raw `python -X importtime ...` data on stdin, and it will output the converted result on stdout.
 
-Typical usage example, with Bash redirection syntax:
+Here's a typical usage example, with Bash redirection syntax:
 
 ```bash
 # Python outputs its raw importtime data to stderr. Save it to raw_importtime.txt.
 python -X importtime -c 'import module_to_test' 2> raw_importtime.txt
-# Convert it to "flamegraph.pl" format and save that to converted_importtime.txt.
+
+# Convert it to "flamegraph.pl" format, and save that to converted_importtime.txt.
 python -m importtime_convert --output-format flamegraph.pl <raw_importtime.txt >converted_importtime.txt
 ```
 
@@ -20,11 +36,11 @@ Or, all in one step:
 ```bash
 python -X importtime -c 'import module_to_test' \
     2>&1 >/dev/null \
-    | python -m importtime_convert --output-format flamegraph.pl \
+    | importtime-convert --output-format flamegraph.pl \
     > converted_importtime.txt
 ```
 
-See the [available output formats](#available-output-formats) below and `python -m importtime_convert --help` for full details.
+See the [available output formats](#available-output-formats) below and `importtime-convert --help` for full details.
 
 ## Usage as a library
 

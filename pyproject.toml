@@ -19,6 +19,9 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = []
 
+[project.scripts]
+importtime-convert = "importtime_convert.__main__:_cli_main"
+
 [project.urls]
 Source = "https://github.com/SyntaxColoring/importtime_convert"
 Issues = "https://github.com/SyntaxColoring/importtime_convert/issues"
