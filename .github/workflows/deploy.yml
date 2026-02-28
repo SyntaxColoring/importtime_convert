@@ -11,7 +11,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install Nox
-        uses: wntrblm/nox@1199ab3892b1a941f80ff052083d0a571abed79d # 2024.10.09, pinned by SHA for security.
+        uses: wntrblm/nox@5a277b752f6094150e25237d47c34168e2b7526e # 2026.02.09, pinned by SHA for security.
       - run: nox -s build
       - name: Store the distribution packages
         uses: actions/upload-artifact@v4
