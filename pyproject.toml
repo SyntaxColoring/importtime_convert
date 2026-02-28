@@ -33,9 +33,8 @@ Changelog = "https://github.com/SyntaxColoring/importtime_convert/blob/main/CHAN
 profile = "black"
 
 [tool.mypy]
+files = "src, tests, *.py"
 strict = true
-python_version = 3.9  # Our lowest supported version.
-exclude = "^dist/"
 
 [tool.pytest]
 testpaths = ["tests"]

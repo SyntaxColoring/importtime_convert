@@ -5,8 +5,8 @@
 
 Then:
 
-* Run `nox` to run the full suite of typechecks, tests, etc. It should autodetect your installed Python versions.
-* To run a specific thing, run `nox -s <session name>`. See `nox --list` for all available session names.
+* Run `nox` to run the full suite of typechecks, tests, etc. It should autodetect your installed Python versions. If you have a lot of Python versions installed, this can take a while; you can limit it to just one version with `nox --python <version>`.
+* To run a specific task (what `nox` calls a "session"), run `nox -s <session name>`. See `nox --list` for all available session names.
 * Run `nox -s make_dev_venv` to create a virtual environment at `.venv/` that has this project and its dev dependencies installed. Point your editor to it so it can follow imports and give you autocomplete.
 
 # Release checklist

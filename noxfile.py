@@ -16,11 +16,11 @@ def make_dev_venv(session):
     session.run(".venv/bin/pip", "install", "-r", "requirements-dev.txt", external=True)
 
 
-@nox.session
+@nox.session(python=SUPPORTED_PYTHON_VERSIONS)
 def typecheck(session):
     """Do typechecking."""
     session.install("-r", "requirements-dev.txt")
-    session.run("mypy", ".")
+    session.run("mypy")
 
 
 @nox.session(default=False)
